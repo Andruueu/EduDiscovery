@@ -4,17 +4,13 @@ export default function TimeDisplay() {
   const [time, setTime] = useState(null);
 
   useEffect(() => {
-    const fetchTime = () => {
-      fetch("https://worldtimeapi.org/api/ip")
-        .then((r) => r.json())
-        .then((json) => {
-          const d = new Date(json.datetime);
-          setTime(d.toLocaleString());
-        })
-        .catch(console.error);
+    const updateTime = () => {
+      const now = new Date();
+      setTime(now.toLocaleString());
     };
-    fetchTime();
-    const interval = setInterval(fetchTime, 1000);
+
+    updateTime(); // Setează ora imediat la încărcare
+    const interval = setInterval(updateTime, 1000); // Actualizare la fiecare secundă
     return () => clearInterval(interval);
   }, []);
 

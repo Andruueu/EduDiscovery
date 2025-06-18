@@ -1,6 +1,7 @@
 import Navbar from "./Navbar";
 import LandingCard from "./LandingCard";
 import TimeDisplay from "./TimeDisplay";
+import anatomyImage from "../assets/nhia-moua-F4cJtI7HCMw-unsplash.jpg";
 
 export default function Home() {
   const cards = [
@@ -26,7 +27,7 @@ export default function Home() {
       id: "anatomy",
       title: "Human body",
       emoji: "🧬",
-      img: "/assets/src/nhia-moua-F4cJtI7HCMw-unsplash.jpg",
+      img: anatomyImage,
     },
   ];
 
@@ -56,13 +57,6 @@ export default function Home() {
 
         <TimeDisplay />
       </header>
-
-      <AnimalsSection />
-      <MarineAnimalsSection />
-      <UniverseSection />
-      <AnatomySection />
-
-      <Footer />
     </>
   );
 }

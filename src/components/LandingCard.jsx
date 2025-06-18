@@ -1,8 +1,8 @@
-export default function LandingCard({ id, title, emoji, imgSrc }) {
+export default function LandingCard({ id, title, emoji, imgSrc, onClick }) {
   return (
-    <a
-      href={`#${id}`}
-      className="group relative overflow-hidden rounded-xl shadow-lg w-full sm:w-64 h-40 sm:h-48 bg-blue-100 dark:bg-blue-900 transition-transform transform hover:scale-105"
+    <div
+      onClick={onClick}
+      className="group relative overflow-hidden rounded-xl shadow-lg w-full sm:w-64 h-40 sm:h-48 bg-blue-100 dark:bg-blue-900 transition-transform transform hover:scale-105 cursor-pointer"
     >
       <img
         src={imgSrc}
@@ -13,6 +13,6 @@ export default function LandingCard({ id, title, emoji, imgSrc }) {
         <span className="text-4xl sm:text-5xl">{emoji}</span>
         <h3 className="text-xl sm:text-2xl font-bold mt-2">{title}</h3>
       </div>
-    </a>
+    </div>
   );
 }

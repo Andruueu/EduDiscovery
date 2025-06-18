@@ -9,8 +9,8 @@ export default function TimeDisplay() {
       setTime(now.toLocaleString());
     };
 
-    updateTime(); // Setează ora imediat la încărcare
-    const interval = setInterval(updateTime, 1000); // Actualizare la fiecare secundă
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 

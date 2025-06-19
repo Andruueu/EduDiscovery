@@ -11,7 +11,10 @@ export default function MarineAnimalCard({ name }) {
         <img
           src={wiki.thumbnail.source}
           alt={wiki.title}
-          className="w-full h-52 object-cover rounded-lg mb-3"
+
+          className="w-full h-52 object-contain rounded-lg mb-3"
+         
+
         />
       )}
       <h3 className="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-1">

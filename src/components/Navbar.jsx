@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function Navbar() {
+export default function Navbar({ setActiveSection }) {
   const [dark, setDark] = useState(
     () => localStorage.theme === "dark" || false
   );
@@ -16,25 +16,34 @@ export default function Navbar() {
     }
   }, [dark]);
 
+  const sections = [
+    { id: "terrestrial", label: "🐾 Land animals" },
+    { id: "marine", label: "🐟 Marine animals" },
+    { id: "universe", label: "🌌 Galaxy" },
+    { id: "anatomy", label: "🧬 Human body" },
+  ];
+
   return (
     <nav className="bg-purple-300 dark:bg-purple-700 shadow-md sticky top-0 z-50">
       <div className="max-w-5xl mx-auto flex items-center justify-between p-4">
-        <a href="#" className="text-2xl font-extrabold">
+        <button
+          onClick={() => setActiveSection(null)}
+          className="text-2xl font-extrabold cursor-pointer bg-transparent border-0"
+          aria-label="Go to home"
+        >
           EduDiscovery 🚀
-        </a>
+        </button>
         <ul className="hidden md:flex gap-6 text-lg font-semibold">
-          <li>
-            <a href="#terrestrial">🐾 Land animals</a>
-          </li>
-          <li>
-            <a href="#marine">🐟 Marine animals</a>
-          </li>
-          <li>
-            <a href="#universe">🌌 Galaxy</a>
-          </li>
-          <li>
-            <a href="#anatomy">🧬 Human body</a>
-          </li>
+          {sections.map((sec) => (
+            <li key={sec.id}>
+              <button
+                onClick={() => setActiveSection(sec.id)}
+                className="hover:underline"
+              >
+                {sec.label}
+              </button>
+            </li>
+          ))}
         </ul>
         <button
           onClick={() => setDark(!dark)}

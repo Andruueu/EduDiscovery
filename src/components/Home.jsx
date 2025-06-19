@@ -9,7 +9,7 @@ import MarineAnimalsSection from "./MarineAnimalsSection";
 import LandAnimalsSection from "./LandAnimalsSection";
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState(null); // 🆕
+  const [activeSection, setActiveSection] = useState(null);
 
   const cards = [
     {
@@ -40,7 +40,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+      <Navbar setActiveSection={setActiveSection} />
 
       {!activeSection && (
         <header className="bg-blue-200 dark:bg-blue-800 py-12 min-h-screen">
@@ -59,7 +59,7 @@ export default function Home() {
                 title={c.title}
                 emoji={c.emoji}
                 imgSrc={c.img}
-                onClick={() => setActiveSection(c.id)} // 🆕
+                onClick={() => setActiveSection(c.id)}
               />
             ))}
           </div>
@@ -68,14 +68,11 @@ export default function Home() {
         </header>
       )}
 
-      {/* Afișează doar secțiunea selectată */}
       {activeSection === "anatomy" && <AnatomySection />}
-
       {activeSection === "universe" && <GalaxySection />}
       {activeSection === "marine" && <MarineAnimalsSection />}
       {activeSection === "terrestrial" && <LandAnimalsSection />}
 
-      {/* Buton pentru a reveni la pagina principală */}
       {activeSection && (
         <div className="text-center my-6">
           <button

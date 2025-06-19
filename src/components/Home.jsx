@@ -6,7 +6,9 @@ import anatomyImage from "../assets/nhia-moua-F4cJtI7HCMw-unsplash.jpg";
 import AnatomySection from "./AnatomySection";
 import GalaxySection from "./GalaxySection";
 import MarineAnimalsSection from "./MarineAnimalsSection";
+
 import LandAnimalsSection from "./LandAnimalsSection";
+
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState(null);
@@ -71,7 +73,9 @@ export default function Home() {
       {activeSection === "anatomy" && <AnatomySection />}
       {activeSection === "universe" && <GalaxySection />}
       {activeSection === "marine" && <MarineAnimalsSection />}
+
       {activeSection === "terrestrial" && <LandAnimalsSection />}
+
 
       {activeSection && (
         <div className="text-center my-6">

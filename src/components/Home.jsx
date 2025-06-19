@@ -4,7 +4,8 @@ import LandingCard from "./LandingCard";
 import TimeDisplay from "./TimeDisplay";
 import anatomyImage from "../assets/nhia-moua-F4cJtI7HCMw-unsplash.jpg";
 import AnatomySection from "./AnatomySection";
-// import alte secțiuni dacă le ai: UniverseSection, MarineSection, etc.
+import GalaxySection from "./GalaxySection";
+// import alte secțiuni: UniverseSection, MarineSection, etc.
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState(null); // 🆕
@@ -68,9 +69,9 @@ export default function Home() {
 
       {/* Afișează doar secțiunea selectată */}
       {activeSection === "anatomy" && <AnatomySection />}
-      {/* Dacă ai și alte secțiuni:
-      {activeSection === "universe" && <UniverseSection />}
-      {activeSection === "marine" && <MarineSection />}
+
+      {activeSection === "universe" && <GalaxySection />}
+      {/*{activeSection === "marine" && <MarineSection />}
       {activeSection === "terrestrial" && <LandAnimalsSection />} */}
 
       {/* Buton pentru a reveni la pagina principală */}

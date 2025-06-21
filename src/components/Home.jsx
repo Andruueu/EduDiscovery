@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import LandingCard from "./LandingCard";
 import TimeDisplay from "./TimeDisplay";
@@ -6,12 +6,15 @@ import anatomyImage from "../assets/nhia-moua-F4cJtI7HCMw-unsplash.jpg";
 import AnatomySection from "./AnatomySection";
 import GalaxySection from "./GalaxySection";
 import MarineAnimalsSection from "./MarineAnimalsSection";
-
 import LandAnimalsSection from "./LandAnimalsSection";
-
+import FooterSection from "./FooterSection";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [activeSection]);
 
   const cards = [
     {
@@ -41,55 +44,81 @@ export default function Home() {
   ];
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar setActiveSection={setActiveSection} />
 
-      {!activeSection && (
-        <header className="bg-blue-200 dark:bg-blue-800 py-12 min-h-screen">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-4">
-            Welcome to EduDiscovery! 🌟
-          </h1>
-          <p className="text-center text-lg max-w-3xl mx-auto">
-            Choose your category and let's explore!
-          </p>
+      <main className="flex-grow">
+        {!activeSection && (
+          <>
+            {/* Titlu principal */}
+            <section className="bg-blue-100 dark:bg-blue-900 py-12 text-center px-4">
+              <h1 className="text-5xl sm:text-6xl font-extrabold text-blue-900 dark:text-white mb-4">
+                Welcome to EduDiscovery! 🌟
+              </h1>
+            </section>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-10 px-4">
-            {cards.map((c) => (
-              <LandingCard
-                key={c.id}
-                id={c.id}
-                title={c.title}
-                emoji={c.emoji}
-                imgSrc={c.img}
-                onClick={() => setActiveSection(c.id)}
-              />
-            ))}
+            {/* Descriere separată, alt background */}
+            <section className="bg-pink-200 dark:bg-gray-800 text-center py-10 px-6">
+              <p className="text-lg sm:text-xl max-w-5xl mx-auto text-gray-800 dark:text-gray-200">
+                EduDiscovery is your magical gateway into the world of science,
+                animals, the human body, and space! 🚀 Explore the savannahs,
+                dive deep into the oceans, fly through galaxies, and take a peek
+                inside your own body. 🦁🐬🌌🧠
+                <br />
+                With fun facts, beautiful images, interactive sections, it's
+                perfect for kids who love to learn while having fun! 🎉📖✨
+              </p>
+            </section>
+
+            {/* Secțiunea cu carduri */}
+            <section className="bg-blue-200 dark:bg-blue-800 py-12 px-4 text-center">
+              <p className="text-2xl sm:text-3xl font-semibold text-blue-900 dark:text-white mb-10">
+                Choose your category and let's explore! 🌈🧠
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-14">
+                {cards.map((c) => (
+                  <LandingCard
+                    key={c.id}
+                    id={c.id}
+                    title={c.title}
+                    emoji={c.emoji}
+                    imgSrc={c.img}
+                    onClick={() => setActiveSection(c.id)}
+                  />
+                ))}
+              </div>
+
+              <div className="mt-14">
+                <TimeDisplay />
+              </div>
+            </section>
+          </>
+        )}
+
+        {/* Secțiunile interne */}
+        {activeSection === "anatomy" && <AnatomySection />}
+        {activeSection === "universe" && <GalaxySection />}
+        {activeSection === "marine" && <MarineAnimalsSection />}
+        {activeSection === "terrestrial" && <LandAnimalsSection />}
+
+        {/* Buton Back */}
+        {activeSection && (
+          <div className="text-center my-8">
+            <button
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
+              onClick={() => {
+                setActiveSection(null);
+                window.scrollTo({ top: 0, behavior: "auto" });
+              }}
+            >
+              🔙 Back to categories
+            </button>
           </div>
+        )}
+      </main>
 
-          <TimeDisplay />
-        </header>
-      )}
-
-      {activeSection === "anatomy" && <AnatomySection />}
-      {activeSection === "universe" && <GalaxySection />}
-      {activeSection === "marine" && <MarineAnimalsSection />}
-
-      {activeSection === "terrestrial" && <LandAnimalsSection />}
-
-
-      {activeSection && (
-        <div className="text-center my-6">
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            onClick={() => {
-              setActiveSection(null);
-              window.scrollTo({ top: 0, behavior: "auto" }); // Scroll instant sus
-            }}
-          >
-            🔙 Back to categories
-          </button>
-        </div>
-      )}
-    </>
+      <FooterSection />
+    </div>
   );
 }

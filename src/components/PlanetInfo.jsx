@@ -9,6 +9,7 @@ import saturnImg from "../assets/saturn.png";
 import uranusImg from "../assets/uranus.png";
 import neptuneImg from "../assets/neptune.png";
 import plutoImg from "../assets/pluto.png";
+
 const images = {
   sun: sunImg,
   mercury: mercuryImg,
@@ -34,6 +35,7 @@ export default function PlanetInfo({ id, label, wiki }) {
         );
         const data = await res.json();
         setSummary(data.extract);
+        setError(null);
       } catch {
         setError("Couldn't load information.");
       }

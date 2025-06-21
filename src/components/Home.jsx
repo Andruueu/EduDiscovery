@@ -81,7 +81,10 @@ export default function Home() {
         <div className="text-center my-6">
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            onClick={() => setActiveSection(null)}
+            onClick={() => {
+              setActiveSection(null);
+              window.scrollTo({ top: 0, behavior: "auto" }); // Scroll instant sus
+            }}
           >
             🔙 Back to categories
           </button>

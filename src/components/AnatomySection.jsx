@@ -1,6 +1,6 @@
 import { useState } from "react";
 import anatomyImage from "../assets/human-body-kid.png";
-
+import AnatomyQuiz from "../components/AnatomyQuiz";
 const ORGANS = [
   { id: "brain", label: "Brain", wiki: "Brain", top: "10%", left: "50%" },
   { id: "lungs", label: "Lungs", wiki: "Lung", top: "38%", left: "47%" },
@@ -127,6 +127,12 @@ export default function AnatomySection() {
             👆🔴
           </p>
         </div>
+      </div>
+      <div className="mt-20">
+        <h3 className="text-3xl font-bold text-center text-blue-700 mb-6">
+          🧠 Can you answer these questions?
+        </h3>
+        <AnatomyQuiz />
       </div>
 
       {/* Modal */}

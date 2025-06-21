@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import galaxyImg from "../assets/solar-system-min.png";
 import PlanetInfo from "./PlanetInfo";
+import GalaxyQuiz from "../components/GalaxyQuiz";
 
 const PLANETS = [
   { id: "sun", label: "☀️ Sun", wiki: "Sun", top: "80%", left: "5%" },
@@ -104,6 +105,12 @@ export default function GalaxySection() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="mt-20">
+        <h3 className="text-3xl font-bold text-center text-blue-700 mb-6">
+          🧠 Can you answer these questions?
+        </h3>
+        <GalaxyQuiz />
       </div>
 
       {/* Buton scroll sus */}

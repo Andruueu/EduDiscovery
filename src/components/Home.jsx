@@ -8,9 +8,28 @@ import GalaxySection from "./GalaxySection";
 import MarineAnimalsSection from "./MarineAnimalsSection";
 import LandAnimalsSection from "./LandAnimalsSection";
 import FooterSection from "./FooterSection";
+import DidYouKnow from "./DidYouKnow";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState(null);
+  const [randomTopic, setRandomTopic] = useState(null);
+
+  const allTopics = ["terrestrial", "marine", "universe", "anatomy"];
+
+  // Setează random topic pe homepage la montare și schimbă periodic la fiecare 8 secunde
+  useEffect(() => {
+    if (!activeSection) {
+      // Set initial random topic
+      setRandomTopic(allTopics[Math.floor(Math.random() * allTopics.length)]);
+
+      // Creează interval pentru schimbare topic fără refresh
+      const interval = setInterval(() => {
+        setRandomTopic(allTopics[Math.floor(Math.random() * allTopics.length)]);
+      }, 8000);
+
+      return () => clearInterval(interval);
+    }
+  }, [activeSection]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -50,14 +69,12 @@ export default function Home() {
       <main className="flex-grow">
         {!activeSection && (
           <>
-            {/* Titlu principal */}
             <section className="bg-blue-100 dark:bg-blue-900 py-12 text-center px-4">
               <h1 className="text-5xl sm:text-6xl font-extrabold text-blue-900 dark:text-white mb-4">
                 Welcome to EduDiscovery! 🌟
               </h1>
             </section>
 
-            {/* Descriere separată, alt background */}
             <section className="bg-pink-200 dark:bg-gray-800 text-center py-10 px-6">
               <p className="text-lg sm:text-xl max-w-5xl mx-auto text-gray-800 dark:text-gray-200">
                 EduDiscovery is your magical gateway into the world of science,
@@ -70,7 +87,7 @@ export default function Home() {
               </p>
             </section>
 
-            {/* Secțiunea cu carduri */}
+            {/* Carduri */}
             <section className="bg-blue-200 dark:bg-blue-800 py-12 px-4 text-center">
               <p className="text-2xl sm:text-3xl font-semibold text-blue-900 dark:text-white mb-10">
                 Choose your category and let's explore! 🌈🧠
@@ -93,20 +110,38 @@ export default function Home() {
                 <TimeDisplay />
               </div>
             </section>
+
+            {/* Fun fact random din toate categoriile care se schimbă automat */}
+            <section className="mt-12 px-4 max-w-3xl mx-auto">
+              {randomTopic && (
+                <div className="animate-fade-in">
+                  <DidYouKnow topic={randomTopic} />
+                </div>
+              )}
+            </section>
           </>
         )}
 
-        {/* Secțiunile interne */}
-        {activeSection === "anatomy" && <AnatomySection />}
-        {activeSection === "universe" && <GalaxySection />}
-        {activeSection === "marine" && <MarineAnimalsSection />}
-        {activeSection === "terrestrial" && <LandAnimalsSection />}
+        {activeSection && (
+          <>
+            {/* Fun fact pentru categoria curentă */}
+            <div className="animate-fade-in">
+              <DidYouKnow topic={activeSection} />
+            </div>
+
+            {/* Secțiunile categorii */}
+            {activeSection === "anatomy" && <AnatomySection />}
+            {activeSection === "universe" && <GalaxySection />}
+            {activeSection === "marine" && <MarineAnimalsSection />}
+            {activeSection === "terrestrial" && <LandAnimalsSection />}
+          </>
+        )}
 
         {/* Buton Back */}
         {activeSection && (
           <div className="text-center my-8">
             <button
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
+              className="bg-blue-400 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
               onClick={() => {
                 setActiveSection(null);
                 window.scrollTo({ top: 0, behavior: "auto" });

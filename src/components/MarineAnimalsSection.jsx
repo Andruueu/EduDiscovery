@@ -41,7 +41,6 @@ export default function MarineAnimalsSection() {
           </p>
         </div>
       </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {MARINE_ANIMALS.map((name) => (
           <MarineAnimalCard key={name} name={name} />
@@ -51,8 +50,8 @@ export default function MarineAnimalsSection() {
         <h3 className="text-3xl font-bold text-center text-blue-700 mb-6">
           🧠 Can you answer these ocean questions?
         </h3>
-        <MarineAnimalsQuiz />
       </div>
+      <MarineAnimalsQuiz />
     </section>
   );
 }

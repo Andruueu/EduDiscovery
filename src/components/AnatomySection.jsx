@@ -1,6 +1,7 @@
 import { useState } from "react";
 import anatomyImage from "../assets/human-body-kid.png";
 import AnatomyQuiz from "../components/AnatomyQuiz";
+
 const ORGANS = [
   { id: "brain", label: "Brain", wiki: "Brain", top: "10%", left: "50%" },
   { id: "lungs", label: "Lungs", wiki: "Lung", top: "38%", left: "47%" },
@@ -29,11 +30,13 @@ export default function AnatomySection() {
   const [info, setInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showFullText, setShowFullText] = useState(false);
 
   const fetchOrganInfo = async (wikiTitle) => {
     setLoading(true);
     setError(null);
     setInfo(null);
+    setShowFullText(false);
     try {
       const res = await fetch(
         `https://en.wikipedia.org/api/rest_v1/page/summary/${wikiTitle}`
@@ -128,6 +131,7 @@ export default function AnatomySection() {
           </p>
         </div>
       </div>
+
       <div className="mt-20">
         <h3 className="text-3xl font-bold text-center text-blue-700 mb-6">
           🧠 Can you answer these questions?
@@ -145,17 +149,37 @@ export default function AnatomySection() {
             className="bg-white dark:bg-gray-800 rounded-lg max-w-lg p-6 shadow-lg relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-2xl font-semibold mb-4">
+            <h3 className="text-2xl font-semibold mb-4 text-center text-pink-700 dark:text-pink-200">
               {selectedOrgan.label}
             </h3>
 
-            {loading && <p>Loading information...</p>}
-            {error && <p className="text-red-600">{error}</p>}
-            {info && <p>{info}</p>}
+            {loading && <p className="text-center">Loading information...</p>}
+            {error && (
+              <p className="text-red-600 text-center font-medium">{error}</p>
+            )}
+            {!loading && !error && info && (
+              <>
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed mb-4 text-center whitespace-pre-line">
+                  {showFullText
+                    ? info
+                    : info.length > 400
+                    ? info.slice(0, 400) + "..."
+                    : info}
+                </p>
+                {info.length > 400 && (
+                  <button
+                    onClick={() => setShowFullText(!showFullText)}
+                    className="text-sm text-blue-600 dark:text-blue-300 font-medium underline block mx-auto mb-2"
+                  >
+                    {showFullText ? "🔙 Show less" : "🔎 Show more"}
+                  </button>
+                )}
+              </>
+            )}
 
             <button
               onClick={() => setSelectedOrgan(null)}
-              className="mt-6 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 block mx-auto"
             >
               Close
             </button>

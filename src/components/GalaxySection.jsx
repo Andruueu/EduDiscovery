@@ -11,6 +11,7 @@ import saturnImg from "../assets/saturn.png";
 import uranusImg from "../assets/uranus.png";
 import neptuneImg from "../assets/neptune.png";
 import plutoImg from "../assets/pluto.png";
+import GalaxyQuiz from "./GalaxyQuiz";
 
 const images = {
   sun: sunImg,
@@ -26,43 +27,35 @@ const images = {
 };
 
 const PLANETS = [
-  { id: "sun", label: "☀️ Sun", wiki: "Sun", top: "80%", left: "5%" },
+  { id: "sun", label: "☀️ Sun", wiki: "Sun", top: "80%", left: "18%" },
   {
     id: "mercury",
     label: "☿️ Mercury",
     wiki: "Mercury_(planet)",
     top: "70%",
-    left: "12%",
+    left: "27%",
   },
-  { id: "venus", label: "♀️ Venus", wiki: "Venus", top: "65%", left: "16%" },
-  { id: "earth", label: "🌍 Earth", wiki: "Earth", top: "58%", left: "22%" },
-  { id: "mars", label: "♂️ Mars", wiki: "Mars", top: "52%", left: "29%" },
+  { id: "venus", label: "♀️ Venus", wiki: "Venus", top: "65%", left: "31%" },
+  { id: "earth", label: "🌍 Earth", wiki: "Earth", top: "58%", left: "36%" },
+  { id: "mars", label: "♂️ Mars", wiki: "Mars", top: "52%", left: "44%" },
   {
     id: "jupiter",
     label: "♃ Jupiter",
     wiki: "Jupiter",
     top: "45%",
-    left: "34%",
+    left: "49%",
   },
-  { id: "saturn", label: "♄ Saturn", wiki: "Saturn", top: "38%", left: "44%" },
-  { id: "uranus", label: "♅ Uranus", wiki: "Uranus", top: "30%", left: "53%" },
+  { id: "saturn", label: "♄ Saturn", wiki: "Saturn", top: "38%", left: "59%" },
+  { id: "uranus", label: "♅ Uranus", wiki: "Uranus", top: "30%", left: "68%" },
   {
     id: "neptune",
     label: "♆ Neptune",
     wiki: "Neptune",
     top: "23%",
-    left: "59%",
+    left: "74%",
   },
-  { id: "pluto", label: "Pluto", wiki: "Pluto", top: "18%", left: "65%" },
+  { id: "pluto", label: "Pluto", wiki: "Pluto", top: "18%", left: "80%" },
 ];
-
-function truncateText(text, maxChars = 500) {
-  if (!text) return "";
-  if (text.length <= maxChars) return text;
-  const truncated = text.slice(0, maxChars);
-  const lastSpace = truncated.lastIndexOf(" ");
-  return truncated.slice(0, lastSpace) + "...";
-}
 
 const galaxyDescription = `
 🌌 Welcome to our galaxy! The Solar System is a big family made up of the Sun ☀️ and 8 big planets, plus Pluto, which is a dwarf planet! 🌍
@@ -85,11 +78,13 @@ export default function GalaxySection() {
   const [planetInfo, setPlanetInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showFullText, setShowFullText] = useState(false);
 
   const fetchPlanetInfo = async (wiki) => {
     setLoading(true);
     setError(null);
     setPlanetInfo(null);
+    setShowFullText(false);
     try {
       const res = await fetch(
         `https://en.wikipedia.org/api/rest_v1/page/summary/${wiki}`
@@ -118,7 +113,6 @@ export default function GalaxySection() {
       </div>
 
       <div className="flex flex-col md:flex-row items-start gap-12 bg-gray-100 dark:bg-blue-800 rounded-b-lg p-8 shadow-inner">
-        {/* Descriere */}
         <div className="md:w-1/3 text-gray-900 dark:text-gray-100 whitespace-pre-line leading-relaxed text-lg">
           {galaxyDescription.split("\n").map((line, idx) =>
             line.trim() ? (
@@ -131,12 +125,11 @@ export default function GalaxySection() {
           )}
         </div>
 
-        {/* Imagine */}
         <div className="relative md:w-2/3 max-w-full mx-auto md:mx-0 bg-white dark:bg-blue-700 rounded-lg shadow-lg p-4">
           <img
             src={galaxyImg}
             alt="Solar System"
-            className="w-[70%] rounded-lg shadow-lg select-none"
+            className="w-[70%] mx-auto rounded-lg shadow-lg select-none"
             style={{ imageRendering: "auto" }}
             draggable={false}
           />
@@ -172,6 +165,13 @@ export default function GalaxySection() {
         </div>
       </div>
 
+      <div className="mt-20">
+        <h3 className="text-3xl font-bold text-center text-blue-700 mb-6">
+          🧠 Can you answer these questions?
+        </h3>
+        <GalaxyQuiz />
+      </div>
+
       {/* Modal */}
       {selectedPlanet && (
         <div
@@ -179,7 +179,7 @@ export default function GalaxySection() {
           onClick={() => setSelectedPlanet(null)}
         >
           <div
-            className="bg-white dark:bg-blue-900 rounded-lg max-w-lg p-6 shadow-lg relative"
+            className="bg-white dark:bg-blue-900 rounded-lg max-w-lg w-full p-6 shadow-lg relative"
             onClick={(e) => e.stopPropagation()}
           >
             <img
@@ -200,10 +200,23 @@ export default function GalaxySection() {
             {error && (
               <p className="text-red-500 font-semibold text-center">{error}</p>
             )}
-            {!loading && !error && (
-              <p className="text-gray-800 dark:text-gray-200 text-base leading-relaxed text-center">
-                {truncateText(planetInfo, 500)}
-              </p>
+            {!loading && !error && planetInfo && (
+              <>
+                <p className="text-gray-800 dark:text-gray-200 text-base leading-relaxed text-center whitespace-pre-line">
+                  {showFullText
+                    ? planetInfo
+                    : planetInfo.slice(0, 500) +
+                      (planetInfo.length > 500 ? "..." : "")}
+                </p>
+                {planetInfo.length > 500 && (
+                  <button
+                    onClick={() => setShowFullText(!showFullText)}
+                    className="block mt-2 text-sm text-blue-600 dark:text-blue-300 font-medium underline mx-auto hover:text-blue-800 dark:hover:text-blue-100"
+                  >
+                    {showFullText ? "🔙 Show less" : "🔎 Show more"}
+                  </button>
+                )}
+              </>
             )}
 
             <button

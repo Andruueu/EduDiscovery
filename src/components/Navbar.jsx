@@ -50,7 +50,7 @@ export default function Navbar({ setActiveSection }) {
           className="text-3xl"
           aria-label="Toggle dark mode"
         >
-          {dark ? "🌞" : "🌜"}
+          {dark ? "💡" : "💤"}
         </button>
       </div>
     </nav>

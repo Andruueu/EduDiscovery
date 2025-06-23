@@ -92,22 +92,37 @@ export default function AnatomyQuiz() {
       <p className="text-lg mb-4">{current.question}</p>
 
       <div className="space-y-3">
-        {current.options.map((opt) => (
-          <button
-            key={opt}
-            onClick={() => handleAnswer(opt)}
-            disabled={showFeedback}
-            className={`w-full py-2 px-4 rounded-full font-semibold transition-all ${
-              selected === opt
-                ? opt === current.answer
-                  ? "bg-green-400 text-white"
-                  : "bg-red-400 text-white"
-                : "bg-pink-200 hover:bg-pink-300"
-            }`}
-          >
-            {opt}
-          </button>
-        ))}
+        {current.options.map((opt) => {
+          const isSelected = selected === opt;
+          const isCorrect = opt === current.answer;
+          const baseStyle =
+            "w-full py-2 px-4 rounded-full font-semibold transition-all";
+
+          const lightBg =
+            isSelected && showFeedback
+              ? isCorrect
+                ? "bg-blue-400 text-white"
+                : "bg-red-400 text-white"
+              : "bg-sky-200 hover:bg-sky-300";
+
+          const darkBg =
+            isSelected && showFeedback
+              ? isCorrect
+                ? "dark:bg-green-600 dark:text-white"
+                : "dark:bg-red-600 dark:text-white"
+              : "dark:bg-sky-700 dark:hover:bg-sky-600 dark:text-white";
+
+          return (
+            <button
+              key={opt}
+              onClick={() => handleAnswer(opt)}
+              disabled={showFeedback}
+              className={`${baseStyle} ${lightBg} ${darkBg}`}
+            >
+              {opt}
+            </button>
+          );
+        })}
       </div>
 
       {showFeedback && (

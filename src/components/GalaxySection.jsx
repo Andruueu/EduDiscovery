@@ -79,7 +79,13 @@ export default function GalaxySection() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showFullText, setShowFullText] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const onSelectPlanet = (planet) => {
+    setSelectedPlanet(planet);
+    fetchPlanetInfo(planet.wiki);
+    setDropdownOpen(false);
+  };
   const fetchPlanetInfo = async (wiki) => {
     setLoading(true);
     setError(null);
@@ -106,12 +112,6 @@ export default function GalaxySection() {
 
   return (
     <section className="max-w-[90vw] mx-auto my-10 px-6">
-      <div className="bg-blue-100 dark:bg-blue-900 rounded-t-lg py-6 mb-6 shadow-md">
-        <h2 className="text-4xl font-extrabold text-center text-blue-900 dark:text-blue-200">
-          🌌 Explore the Solar System!
-        </h2>
-      </div>
-
       <div className="flex flex-col md:flex-row items-start gap-12 bg-gray-100 dark:bg-blue-800 rounded-b-lg p-8 shadow-inner">
         <div className="md:w-1/3 text-gray-900 dark:text-gray-100 whitespace-pre-line leading-relaxed text-lg">
           {galaxyDescription.split("\n").map((line, idx) =>
@@ -125,7 +125,7 @@ export default function GalaxySection() {
           )}
         </div>
 
-        <div className="relative md:w-2/3 max-w-full mx-auto md:mx-0 bg-white dark:bg-blue-700 rounded-lg shadow-lg p-4">
+        <div className="relative md:w-2/3 max-w-full mx-auto md:mx-0 bg-white dark:bg-blue-700 rounded-lg shadow-lg p-4 hidden md:block">
           <img
             src={galaxyImg}
             alt="Solar System"
@@ -165,6 +165,48 @@ export default function GalaxySection() {
         </div>
       </div>
 
+      <div className="block md:hidden max-w-xs mx-auto mt-6 relative">
+        <button
+          type="button"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+          className="w-full p-4 text-center font-extrabold text-red-600 dark:text-red-400 text-xl bg-red-100 dark:bg-red-900 border-4 border-red-500 dark:border-red-400 rounded-lg cursor-pointer select-none hover:bg-red-200 dark:hover:bg-red-800 transition"
+          aria-haspopup="listbox"
+          aria-expanded={dropdownOpen}
+          aria-label="Explore planets dropdown"
+        >
+          🚀 Explore Planets!
+          <span className="inline-block ml-2 transform transition-transform duration-300">
+            {dropdownOpen ? "▲" : "▼"}
+          </span>
+        </button>
+
+        {dropdownOpen && (
+          <ul
+            role="listbox"
+            className="absolute z-50 w-full max-h-72 overflow-y-auto mt-1 bg-red-100 dark:bg-red-900 border-4 border-red-500 dark:border-red-400 rounded-lg shadow-lg text-red-900 dark:text-red-200 text-lg font-semibold"
+            tabIndex={-1}
+          >
+            {PLANETS.map(({ id, label }) => (
+              <li
+                key={id}
+                role="option"
+                tabIndex={0}
+                className="cursor-pointer p-4 border-b border-red-300 dark:border-red-700 hover:bg-red-300 dark:hover:bg-red-700 last:border-b-0"
+                onClick={() => onSelectPlanet(PLANETS.find((p) => p.id === id))}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelectPlanet(PLANETS.find((p) => p.id === id));
+                  }
+                }}
+              >
+                {label}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       <div className="mt-20">
         <h3 className="text-3xl font-bold text-center text-blue-700 mb-6">
           🧠 Can you answer these questions?
@@ -172,7 +214,6 @@ export default function GalaxySection() {
         <GalaxyQuiz />
       </div>
 
-      {/* Modal */}
       {selectedPlanet && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
